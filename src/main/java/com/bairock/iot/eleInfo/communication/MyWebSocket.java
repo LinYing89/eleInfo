@@ -1,7 +1,8 @@
 package com.bairock.iot.eleInfo.communication;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.websocket.EndpointConfig;
 import javax.websocket.OnClose;
@@ -13,9 +14,11 @@ import javax.websocket.server.ServerEndpoint;
 
 import org.apache.log4j.Logger;
 
-import com.bairock.iot.eleInfo.Device;
-import com.bairock.iot.eleInfo.ServerHandler;
+import com.bairock.iot.eleInfo.CompareSymbol;
+import com.bairock.iot.eleInfo.ValueTrigger;
+import com.bairock.iot.eleInfo.dao.DeviceDao;
 import com.bairock.iot.eleInfo.listener.StartUpListener;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @ServerEndpoint(value = "/websocket")
 public class MyWebSocket {
@@ -65,61 +68,52 @@ public class MyWebSocket {
 		if (msg.equals("rf")) {
 			refreshValues();
 			return;
+		}else if(msg.startsWith("{")) {
+			ObjectMapper mapper = new ObjectMapper();
+			try {
+				Map<?, ?> map = mapper.readValue(msg, Map.class);
+				float great = Float.parseFloat(map.get("great").toString());
+				float less = Float.parseFloat(map.get("less").toString());
+				for(ValueTrigger t : StartUpListener.c1.getListValueTrigger()) {
+					if(t.getCompareSymbol() == CompareSymbol.GREAT) {
+						t.setTriggerValue(great);
+					}else {
+						t.setTriggerValue(less);
+					}
+				}
+				new DeviceDao().update(StartUpListener.c1);
+				Map<String, Object> map1 = new HashMap<>();
+				//2设置成功
+				map1.put("id", 2);
+				StartUpListener.sendMap(map1);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return;
 		}
 		byte[] by = null;
 		//最终发出去的数组
 		byte[] byMsg = null;
-		byte action = getAction(StartUpListener.d1);
+		byte action;
 		switch (msg) {
 		case "d1":
+			action = StartUpListener.getAction(StartUpListener.d1);
 			by = new byte[] { 00, 00, 00, 00, 00, 04, 00, 00, 05, 00, 04, action, 00};
 			break;
 		case "d2":
-			action = getAction(StartUpListener.d2);
+			action = StartUpListener.getAction(StartUpListener.d2);
 			by = new byte[] { 00, 00, 00, 00, 00, 04, 00, 00, 05, 00, 05, action, 00};
 			break;
 		case "d3":
-			action = getAction(StartUpListener.d3);
+			action = StartUpListener.getAction(StartUpListener.d3);
 			by = new byte[] { 00, 00, 00, 00, 00, 04, 00, 00, 05, 00, 06, action, 00};
 			break;
 		}
-		byMsg = createByteMsg(by);
+		byMsg = StartUpListener.createByteMsg(by);
 		if (null != byMsg) {
 			ServerHandler.send(byMsg);
 		}
-	}
-
-	private byte[] createByteMsg(byte[] b1) {
-		byte[] byVerify = getVerify(b1);
-		return unitArray(b1, byVerify);
-	}
-	
-	private byte[] unitArray(byte[] b1, byte[] b2) {
-		byte[] byMsg = new byte[b1.length + b2.length];
-		System.arraycopy(b1, 0, byMsg, 0, b1.length);
-		System.arraycopy(b2, 0, byMsg, b1.length, b2.length);
-		return byMsg;
-	}
-	
-	private byte getAction(Device device) {
-		byte action;
-		if (device.getValue() == 0) {
-			action = 0;
-		} else {
-			action = (byte) 0xff;
-		}
-		return action;
-	}
-
-	public static byte[] getVerify(byte[] by) {
-		byte[] bysum = new byte[2];
-		int chksum = 0;
-		for (int i = 0; i < by.length; i++) {
-			chksum += by[i];
-		}
-		bysum[1] = (byte) (chksum & 0xFF);
-		bysum[0] = (byte) (chksum >> 8 & 0xFF);
-		return bysum;
 	}
 
 	private void refreshValues() {

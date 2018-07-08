@@ -20,7 +20,7 @@ public class DeviceDao {
 		}catch (Exception e) {
 			eManager.getTransaction().rollback();
 			e.printStackTrace();
-			logger.error(e.getMessage());
+			logger.error(e.getMessage() + "说明:" + device.getCoding());
 		}
 	}
 }

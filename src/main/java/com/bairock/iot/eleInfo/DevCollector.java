@@ -25,4 +25,12 @@ public class DevCollector extends Device {
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	public void setValue(float value) {
+		super.setValue(value);
+		for (ValueTrigger trigger : getListValueTrigger()) {
+			trigger.triggering(value);
+		}
+	}
+
 }

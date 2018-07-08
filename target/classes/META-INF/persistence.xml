@@ -5,11 +5,14 @@
 	<persistence-unit name="eleinfo">
 		<class>com.bairock.iot.eleInfo.MsgManager</class>
 		<class>com.bairock.iot.eleInfo.Device</class>
+		<class>com.bairock.iot.eleInfo.DevAlarm</class>
+		<class>com.bairock.iot.eleInfo.DevCollector</class>
+		<class>com.bairock.iot.eleInfo.DevSwitch</class>
 		<class>com.bairock.iot.eleInfo.AlarmInfo</class>
 		<class>com.bairock.iot.eleInfo.CollectorTerminal</class>
 		<class>com.bairock.iot.eleInfo.DataAddress</class>
-		<class>com.bairock.iot.eleInfo.DevCollector</class>
 		<class>com.bairock.iot.eleInfo.Omnibus</class>
+		<class>com.bairock.iot.eleInfo.ValueTrigger</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>

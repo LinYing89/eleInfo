@@ -5,11 +5,14 @@
 	<persistence-unit name="intelDev">
 		<class>com.bairock.iot.eleInfo.MsgManager</class>
 		<class>com.bairock.iot.eleInfo.Device</class>
+		<class>com.bairock.iot.eleInfo.DevAlarm</class>
+		<class>com.bairock.iot.eleInfo.DevCollector</class>
+		<class>com.bairock.iot.eleInfo.DevSwitch</class>
 		<class>com.bairock.iot.eleInfo.AlarmInfo</class>
 		<class>com.bairock.iot.eleInfo.CollectorTerminal</class>
 		<class>com.bairock.iot.eleInfo.DataAddress</class>
-		<class>com.bairock.iot.eleInfo.DevCollector</class>
 		<class>com.bairock.iot.eleInfo.Omnibus</class>
+		<class>com.bairock.iot.eleInfo.ValueTrigger</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
@@ -17,9 +20,9 @@
 			<property name="javax.persistence.jdbc.user" value="root"/>
 			<property name="javax.persistence.jdbc.password" value="root"/>
 			<property name="hibernate.show_sql" value="true"/>
-<!-- 			<property name="hibernate.hbm2ddl.auto" value="create"/> -->
+			<property name="hibernate.hbm2ddl.auto" value="create"/>
 <!-- 			<property name="hibernate.hbm2ddl.auto" value="update"/> -->
- 			<property name="hibernate.hbm2ddl.auto" value="none"/>
+<!--  			<property name="hibernate.hbm2ddl.auto" value="none"/> -->
 		</properties>
 	</persistence-unit>
 </persistence>

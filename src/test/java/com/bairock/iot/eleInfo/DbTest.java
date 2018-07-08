@@ -9,6 +9,8 @@ import javax.persistence.Persistence;
 
 public class DbTest {
 
+	private Device d1;
+	
 	public static void main(String[] args) {
 		DbTest db = new DbTest();
 		// 通信管理机
@@ -65,7 +67,7 @@ public class DbTest {
 		DevAlarm a1 = new DevAlarm("a1", "门禁");
 		DevAlarm a2 = new DevAlarm("a2", "烟雾");
 		DevAlarm a3 = new DevAlarm("a3", "水浸");
-		DevSwitch d1 = new DevSwitch("d1", "风机");
+		d1 = new DevSwitch("d1", "风机");
 		DevSwitch d2 = new DevSwitch("d2", "照明");
 		DevSwitch d3 = new DevSwitch("d3", "空调");
 		da.addDevice(a1);
@@ -84,6 +86,22 @@ public class DbTest {
 		ct.setNum(2);
 		DataAddress da = createDataAddress(0x12);
 		DevCollector c1 = new DevCollector("c1", "温度");
+		ValueTrigger trigger = new ValueTrigger();
+		trigger.setEnable(true);
+		trigger.setTriggerValue(28);
+		trigger.setCompareSymbol(CompareSymbol.GREAT);
+		trigger.setTargetDevice(d1);
+		trigger.setTargetValue(0);
+		trigger.setInfo("当温度大于28度时打开风机");
+		c1.addValueTrigger(trigger);
+		ValueTrigger trigger2 = new ValueTrigger();
+		trigger2.setEnable(true);
+		trigger2.setTriggerValue(23);
+		trigger2.setCompareSymbol(CompareSymbol.LESS);
+		trigger2.setTargetDevice(d1);
+		trigger2.setTargetValue(1);
+		trigger2.setInfo("当温度低于23度时关闭风机");
+		c1.addValueTrigger(trigger2);
 		da.addDevice(c1);
 		ct.addDataAddress(da);
 		

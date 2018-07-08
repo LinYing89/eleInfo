@@ -19,9 +19,12 @@ var d1_btn;
 var d2_btn;
 var d3_btn;
 
+var tem_great_value;
+var tem_less_value;
+	
 window.onload = prepare;
 
-function prepare() {
+function prepare() {		
 	a1_img = document.getElementById("a1_img");
 	a1_txt = document.getElementById("a1_txt");
 	a2_img = document.getElementById("a2_img");
@@ -40,7 +43,12 @@ function prepare() {
 	d1_btn = document.getElementById("d1_btn");
 	d2_btn = document.getElementById("d2_btn");
 	d3_btn = document.getElementById("d3_btn");
+	
+	tem_great_value = document.getElementById("tem_great_value");
+	tem_less_value = document.getElementById("tem_less_value");
 
+	var btnSubmit = document.getElementById("btn_submit");
+	
 	d1_btn.onclick = function() {
 		alert("function");
 	}
@@ -53,6 +61,12 @@ function prepare() {
 	};
 	d3_btn.onclick = function() {
 		ctrlClick(2);
+	};
+	btnSubmit.onclick = function() {
+		var json = new Object();
+		json.great = tem_great_value.value;
+		json.less = tem_less_value.value;
+		send(JSON.stringify(json));
 	};
 }
 
@@ -77,6 +91,7 @@ function ctrlClick(which) {
 function analysis(message) {
 	var obj = JSON.parse(message);
 	var value = obj.value;
+	if(obj.id == 0){
 	switch(obj.coding) {
 		case "a1":
 			alarm(a1_img, a1_txt, value);
@@ -102,6 +117,15 @@ function analysis(message) {
 		case "c2":
 			c2.innerText = value;
 			break;
+	}
+	}else if(obj.id == 1){
+		if(obj.symbol == "GREAT"){
+			tem_great_value.value = value;
+		}else if(obj.symbol == "LESS"){
+			tem_less_value.value = value;
+		}
+	}else if(obj.id == 2){
+		alert("保存成功");
 	}
 }
 

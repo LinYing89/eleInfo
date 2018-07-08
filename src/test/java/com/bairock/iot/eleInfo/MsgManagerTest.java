@@ -12,6 +12,7 @@ import org.junit.Test;
 public class MsgManagerTest {
 
 	MsgManager mm;
+	DevSwitch d1;
 
 	@Before
 	public void setUp() throws Exception {
@@ -76,6 +77,16 @@ public class MsgManagerTest {
 		content3 = Arrays.copyOfRange(msg3, 6, msg3.length);
 		mm.handler(content3);
 		assertEquals(6f, c2.getValue(), 0.01);
+		
+		msg3 = new byte[] { 0, 0xa, 0, 0, 0, 4, 1, 2, 0x0, 0x12, 0, 2, 0, 0x20, 0, 0 };
+		content3 = Arrays.copyOfRange(msg3, 6, msg3.length);
+		mm.handler(content3);
+		assertEquals(32f, c1.getValue(), 0.01);
+		
+		msg3 = new byte[] { 0, 0xa, 0, 0, 0, 4, 1, 2, 0x0, 0x12, 0, 2, 0, 0x3, 0, 0 };
+		content3 = Arrays.copyOfRange(msg3, 6, msg3.length);
+		mm.handler(content3);
+		assertEquals(3f, c1.getValue(), 0.01);
 	}
 
 	public MsgManager createMsgManager() {
@@ -111,7 +122,7 @@ public class MsgManagerTest {
 		DevAlarm a1 = new DevAlarm("a1", "门禁");
 		DevAlarm a2 = new DevAlarm("a2", "烟雾");
 		DevAlarm a3 = new DevAlarm("a3", "水浸");
-		DevSwitch d1 = new DevSwitch("d1", "风机");
+		d1 = new DevSwitch("d1", "风机");
 		DevSwitch d2 = new DevSwitch("d2", "照明");
 		DevSwitch d3 = new DevSwitch("d3", "空调");
 		da.addDevice(a1);
@@ -135,6 +146,37 @@ public class MsgManagerTest {
 		ct.setNum(2);
 		DataAddress da = createDataAddress(0x12);
 		DevCollector c1 = new DevCollector("c1", "温度");
+		ValueTrigger trigger = new ValueTrigger();
+		trigger.setEnable(true);
+		trigger.setTriggerValue(28);
+		trigger.setCompareSymbol(CompareSymbol.GREAT);
+		trigger.setTargetDevice(d1);
+		trigger.setTargetValue(0);
+		trigger.setOnTriggedChangedListener(new ValueTrigger.OnTriggedChangedListener(){
+
+			@Override
+			public void onTriggedChanged(ValueTrigger trigger, boolean trigged) {
+				System.out.println("OnTriggedChangedListener " + trigger.getTriggerValue() + trigged);
+			}
+			
+		});
+		c1.addValueTrigger(trigger);
+		ValueTrigger trigger2 = new ValueTrigger();
+		trigger2.setEnable(true);
+		trigger2.setTriggerValue(23);
+		trigger2.setCompareSymbol(CompareSymbol.LESS);
+		trigger2.setTargetDevice(d1);
+		trigger2.setTargetValue(1);
+		trigger2.setInfo("当温度低于23度时关闭风机");
+		trigger2.setOnTriggedChangedListener(new ValueTrigger.OnTriggedChangedListener(){
+
+			@Override
+			public void onTriggedChanged(ValueTrigger trigger, boolean trigged) {
+				System.out.println("OnTriggedChangedListener " + trigger.getTriggerValue() + trigged);
+			}
+			
+		});
+		c1.addValueTrigger(trigger2);
 		da.addDevice(c1);
 		setListener(c1);
 		ct.addDataAddress(da);

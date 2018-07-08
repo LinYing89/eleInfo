@@ -4,4 +4,15 @@
   <listener>
   	<listener-class>com.bairock.iot.eleInfo.listener.StartUpListener</listener-class>
   </listener>
+  <servlet>
+  	<description>
+  	</description>
+  	<display-name>ChangeTriggerValue</display-name>
+  	<servlet-name>ChangeTriggerValue</servlet-name>
+  	<servlet-class>com.bairock.iot.eleInfo.servlet.ChangeTriggerValue</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>ChangeTriggerValue</servlet-name>
+  	<url-pattern>/ChangeTriggerValue</url-pattern>
+  </servlet-mapping>
 </web-app>

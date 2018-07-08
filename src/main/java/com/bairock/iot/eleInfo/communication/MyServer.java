@@ -1,4 +1,4 @@
-package com.bairock.iot.eleInfo;
+package com.bairock.iot.eleInfo.communication;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;

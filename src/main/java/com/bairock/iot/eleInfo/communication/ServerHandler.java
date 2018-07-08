@@ -1,9 +1,10 @@
-package com.bairock.iot.eleInfo;
+package com.bairock.iot.eleInfo.communication;
 
 import java.util.Arrays;
 
 import org.apache.log4j.Logger;
 
+import com.bairock.iot.eleInfo.MsgManager;
 import com.bairock.iot.eleInfo.listener.StartUpListener;
 
 import io.netty.buffer.ByteBuf;

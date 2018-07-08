@@ -1,7 +1,9 @@
-package com.bairock.iot.eleInfo;
+package com.bairock.iot.eleInfo.communication;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.bairock.iot.eleInfo.Device;
 
 public class MessageAnalysiser {
 

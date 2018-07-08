@@ -22,6 +22,7 @@ public class MyOnValueChangedListener implements OnValueChangedListener {
 	public void onValueChanged(Device device, float value) {
 		logger.info("值改变:" + device.getCoding() + " value:" + value);
 		Map<String, Object> map = new HashMap<>();
+		map.put("id", 0);
 		map.put("coding", device.getCoding());
 		map.put("value", device.getValue());
 		ObjectMapper mapper = new ObjectMapper();

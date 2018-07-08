@@ -16,9 +16,11 @@ import com.bairock.iot.eleInfo.CollectorTerminal;
 import com.bairock.iot.eleInfo.DataAddress;
 import com.bairock.iot.eleInfo.Device;
 import com.bairock.iot.eleInfo.MsgManager;
-import com.bairock.iot.eleInfo.MyServer;
 import com.bairock.iot.eleInfo.Omnibus;
+import com.bairock.iot.eleInfo.ValueTrigger;
+import com.bairock.iot.eleInfo.communication.MyOnTriggedChangedListener;
 import com.bairock.iot.eleInfo.communication.MyOnValueChangedListener;
+import com.bairock.iot.eleInfo.communication.MyServer;
 import com.bairock.iot.eleInfo.communication.MyWebSocketHelper;
 import com.bairock.iot.eleInfo.dao.MsgManagerDao;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -38,6 +40,7 @@ public class StartUpListener implements ServletContextListener {
 	public static Device d1;
 	public static Device d2;
 	public static Device d3;
+	public static Device c1;
 	
 	private MyServer myServer;
 	
@@ -83,6 +86,11 @@ public class StartUpListener implements ServletContextListener {
     							d2 = dev;
     						}else if(dev.getCoding().equals("d3")) {
     							d3 = dev;
+    						}else if(dev.getCoding().equals("c1")) {
+    							c1 = dev;
+    							for(ValueTrigger t : c1.getListValueTrigger()) {
+    								t.setOnTriggedChangedListener(new MyOnTriggedChangedListener());
+    							}
     						}
     						dev.setOnValueChangedListener(new MyOnValueChangedListener());
     					}
@@ -115,16 +123,22 @@ public class StartUpListener implements ServletContextListener {
     				for(DataAddress d : c.getListDataAddress()) {
     					for(Device dev : d.getListDevice()) {
     						Map<String, Object> map = new HashMap<>();
+    						//0表示设备状态或值
+    						map.put("id", 0);
     						map.put("coding", dev.getCoding());
     						map.put("value", dev.getValue());
-    						ObjectMapper mapper = new ObjectMapper();
-    						try {
-    							String json = mapper.writeValueAsString(map);
-    							if (null != json) {
-    								MyWebSocketHelper.sendGroupMessage(json);
+    						sendMap(map);
+    						if(dev.getCoding().equals("c1")) {
+    							//温度
+    							for(ValueTrigger trigger : dev.getListValueTrigger()) {
+    								map = new HashMap<>();
+    	    						//1表示触发值
+    	    						map.put("id", 1);
+    	    						map.put("symbol", trigger.getCompareSymbol());
+    	    						map.put("coding", dev.getCoding());
+    	    						map.put("value", trigger.getTriggerValue());
+    	    						sendMap(map);
     							}
-    						} catch (JsonProcessingException e) {
-    							e.printStackTrace();
     						}
     					}
     				}
@@ -132,4 +146,50 @@ public class StartUpListener implements ServletContextListener {
     		}
     	}
     }
+    
+    public static void sendMap(Map<String, Object> map) {
+    	ObjectMapper mapper = new ObjectMapper();
+		try {
+			String json = mapper.writeValueAsString(map);
+			if (null != json) {
+				MyWebSocketHelper.sendGroupMessage(json);
+			}
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    public static byte getAction(Device device) {
+		byte action;
+		if (device.getValue() == 0) {
+			action = 0;
+		} else {
+			action = (byte) 0xff;
+		}
+		return action;
+	}
+    
+    public static byte[] createByteMsg(byte[] b1) {
+    	if(b1 == null) {
+    		return null;
+    	}
+		byte[] byVerify = getVerify(b1);
+		return unitArray(b1, byVerify);
+	}
+    public static byte[] unitArray(byte[] b1, byte[] b2) {
+		byte[] byMsg = new byte[b1.length + b2.length];
+		System.arraycopy(b1, 0, byMsg, 0, b1.length);
+		System.arraycopy(b2, 0, byMsg, b1.length, b2.length);
+		return byMsg;
+	}
+    public static byte[] getVerify(byte[] by) {
+		byte[] bysum = new byte[2];
+		int chksum = 0;
+		for (int i = 0; i < by.length; i++) {
+			chksum += by[i];
+		}
+		bysum[1] = (byte) (chksum & 0xFF);
+		bysum[0] = (byte) (chksum >> 8 & 0xFF);
+		return bysum;
+	}
 }

@@ -43,6 +43,9 @@ public class Device {
 
 	private float value;
 	
+	@OneToMany(mappedBy = "sourceDevice", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ValueTrigger> listValueTrigger = new ArrayList<>();
+	
 	@OneToMany(cascade=CascadeType.ALL)  
     @JoinColumn(name="deviceId") 
 	@OrderBy(value = "alarmTime desc")
@@ -115,6 +118,14 @@ public class Device {
 		this.listAlarmInfo = listAlarmInfo;
 	}
 
+	public List<ValueTrigger> getListValueTrigger() {
+		return listValueTrigger;
+	}
+
+	public void setListValueTrigger(List<ValueTrigger> listValueTrigger) {
+		this.listValueTrigger = listValueTrigger;
+	}
+
 	public OnValueChangedListener getOnValueChangedListener() {
 		return onValueChangedListener;
 	}
@@ -131,6 +142,18 @@ public class Device {
 	
 	public void removeAlarmInfo(AlarmInfo ai) {
 		listAlarmInfo.remove(ai);
+	}
+	
+	
+	public void addValueTrigger(ValueTrigger valueTrigger) {
+		if(null != valueTrigger) {
+			valueTrigger.setSourceDevice(this);
+			listValueTrigger.add(valueTrigger);
+		}
+	}
+	
+	public void removeValueTrigger(ValueTrigger valueTrigger) {
+		listValueTrigger.remove(valueTrigger);
 	}
 	
 	public void handler(byte by) {
