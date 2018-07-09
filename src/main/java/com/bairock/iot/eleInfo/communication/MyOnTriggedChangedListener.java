@@ -20,9 +20,10 @@ public class MyOnTriggedChangedListener implements OnTriggedChangedListener {
 			if(trigger.getTargetValue() == 1) {
 				action = (byte) 0xff;
 			}
-			by = new byte[] { 00, 00, 00, 00, 00, 04, 00, 00, 05, 00, 04, action, 00};
+			by = new byte[] { 00, 07, 00, 00, 00, 04, 00, 00, 05, 00, 04, action, 00};
 			byte[] byMsg = StartUpListener.createByteMsg(by);
 			if (null != byMsg) {
+				logger.info(ServerHandler.bytesToHexString(byMsg));
 				ServerHandler.send(byMsg);
 			}
 		}else {

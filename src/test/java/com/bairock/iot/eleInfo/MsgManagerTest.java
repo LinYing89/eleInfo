@@ -29,7 +29,7 @@ public class MsgManagerTest {
 		Device d2 = da.findDevice("d2");
 		Device d3 = da.findDevice("d3");
 		// 00100101
-		byte[] msg = new byte[] { 0, 0xa, 0, 0, 0, 4, 0, 0, 0x2, 0x00, 0, 2, 0, 0x25, 0, 0 };
+		byte[] msg = new byte[] { 0, 0x8, 0, 0, 0, 4, 0, 0, 0x2, 0x00, 0, 2, 0, 0x25, 0, 0 };
 		byte[] content = Arrays.copyOfRange(msg, 6, msg.length);
 		mm.handler(content);
 		assertEquals(1f, a1.getValue(), 0.01);
@@ -40,7 +40,7 @@ public class MsgManagerTest {
 		assertEquals(0f, d3.getValue(), 0.01);
 
 		// 01011010
-		byte[] msg2 = new byte[] { 0, 0xa, 0, 0, 0, 4, 0, 0, 0x2, 0x00, 0, 2, 0, 0x5a, 0, 0 };
+		byte[] msg2 = new byte[] { 0, 0x8, 0, 0, 0, 4, 0, 0, 0x2, 0x00, 0, 2, 0, 0x5a, 0, 0 };
 		byte[] content2 = Arrays.copyOfRange(msg2, 6, msg2.length);
 		mm.handler(content2);
 		assertEquals(0f, a1.getValue(), 0.01);
@@ -53,40 +53,54 @@ public class MsgManagerTest {
 	
 	@Test
 	public void testCollector() {
-		DataAddress da = mm.findOmnibus(1).findCollectorTerminal(2).findDataAddress(0x12);
+		DataAddress da = mm.findOmnibus(1).findCollectorTerminal(0x21).findDataAddress(0x0);
 		Device c1 = da.findDevice("c1");
-		DataAddress da2 = mm.findOmnibus(1).findCollectorTerminal(2).findDataAddress(0x13);
-		Device c2 = da2.findDevice("c2");
+		Device c2 = da.findDevice("c2");
 		
-		byte[] msg2 = new byte[] { 0, 0xa, 0, 0, 0, 4, 1, 2, 0x0, 0x12, 0, 2, 0, 0x0a, 0, 0 };
+		byte[] msg2 = new byte[] { 0, 0x8, 0, 0, 0, 4, 1, 0x21, 0x0, 0x0, 0, 4, 0, 0x0a, 0,0x0b,0, 0 };
 		byte[] content2 = Arrays.copyOfRange(msg2, 6, msg2.length);
 		mm.handler(content2);
 		assertEquals(10f, c1.getValue(), 0.01);
+		assertEquals(11f, c2.getValue(), 0.01);
 		
-		msg2 = new byte[] { 0, 0xa, 0, 0, 0, 4, 1, 2, 0x0, 0x12, 0, 2, 0, 0x05, 0, 0 };
+		msg2 = new byte[] { 0, 0x8, 0, 0, 0, 4, 1, 0x21, 0x0, 0x0, 0, 4, 0, 0x05, 0, 5, 0, 0 };
 		content2 = Arrays.copyOfRange(msg2, 6, msg2.length);
 		mm.handler(content2);
 		assertEquals(5f, c1.getValue(), 0.01);
-		
-		byte[] msg3 = new byte[] { 0, 0xa, 0, 0, 0, 4, 1, 2, 0x0, 0x13, 0, 2, 0, 0x0a, 0, 0 };
+		assertEquals(5f, c2.getValue(), 0.01);
+//		
+		byte[] msg3 = new byte[] { 0, 0x8, 0, 0, 0, 4, 1, 0x21, 0x0, 0x0, 0, 4, 0, 0x0a,0,9, 0, 0 };
 		byte[] content3 = Arrays.copyOfRange(msg3, 6, msg3.length);
 		mm.handler(content3);
-		assertEquals(10f, c2.getValue(), 0.01);
+		assertEquals(10f, c1.getValue(), 0.01);
+		assertEquals(9f, c2.getValue(), 0.01);
+	}
+	
+	@Test
+	public void testTotal() {
+		byte[] msg = new byte[] { 00, 0x12, 00, 00, 00, 04,  01, 0x21, 00, 00, 00, 04, 0x0a, (byte) 0xd6, 0x1d, 0x0f, 00, 00, 02, 00, 00, 02, 00, 0x1f, 56, (byte) 0xb6 };
+		byte[] content = Arrays.copyOfRange(msg, 6, msg.length);
+		mm.handler(content);
 		
-		msg3 = new byte[] { 0, 0xa, 0, 0, 0, 4, 1, 2, 0x0, 0x13, 0, 2, 0, 0x06, 0, 0 };
-		content3 = Arrays.copyOfRange(msg3, 6, msg3.length);
-		mm.handler(content3);
-		assertEquals(6f, c2.getValue(), 0.01);
+		DataAddress da = mm.findOmnibus(1).findCollectorTerminal(0x21).findDataAddress(0x0);
+		Device c1 = da.findDevice("c1");
+		Device c2 = da.findDevice("c2");
+		assertEquals(2774f, c1.getValue(), 0.01);
+		assertEquals(7439f, c2.getValue(), 0.01);
 		
-		msg3 = new byte[] { 0, 0xa, 0, 0, 0, 4, 1, 2, 0x0, 0x12, 0, 2, 0, 0x20, 0, 0 };
-		content3 = Arrays.copyOfRange(msg3, 6, msg3.length);
-		mm.handler(content3);
-		assertEquals(32f, c1.getValue(), 0.01);
-		
-		msg3 = new byte[] { 0, 0xa, 0, 0, 0, 4, 1, 2, 0x0, 0x12, 0, 2, 0, 0x3, 0, 0 };
-		content3 = Arrays.copyOfRange(msg3, 6, msg3.length);
-		mm.handler(content3);
-		assertEquals(3f, c1.getValue(), 0.01);
+		DataAddress da2 = mm.findOmnibus(0).findCollectorTerminal(0).findDataAddress(0x200);
+		Device a1 = da2.findDevice("a1");
+		Device a2 = da2.findDevice("a2");
+		Device a3 = da2.findDevice("a3");
+		Device d1 = da2.findDevice("d1");
+		Device d2 = da2.findDevice("d2");
+		Device d3 = da2.findDevice("d3");
+		assertEquals(1f, a1.getValue(), 0.01);
+		assertEquals(1f, a2.getValue(), 0.01);
+		assertEquals(1f, a3.getValue(), 0.01);
+		assertEquals(1f, d1.getValue(), 0.01);
+		assertEquals(0f, d2.getValue(), 0.01);
+		assertEquals(0f, d3.getValue(), 0.01);
 	}
 
 	public MsgManager createMsgManager() {
@@ -143,8 +157,8 @@ public class MsgManagerTest {
 
 	public CollectorTerminal createCollectorTerminal2() {
 		CollectorTerminal ct = new CollectorTerminal();
-		ct.setNum(2);
-		DataAddress da = createDataAddress(0x12);
+		ct.setNum(0x21);
+		DataAddress da = createDataAddress(0);
 		DevCollector c1 = new DevCollector("c1", "温度");
 		ValueTrigger trigger = new ValueTrigger();
 		trigger.setEnable(true);
@@ -179,13 +193,11 @@ public class MsgManagerTest {
 		c1.addValueTrigger(trigger2);
 		da.addDevice(c1);
 		setListener(c1);
-		ct.addDataAddress(da);
 
-		DataAddress da2 = createDataAddress(0x13);
 		DevCollector c2 = new DevCollector("c2", "湿度");
-		da2.addDevice(c2);
+		da.addDevice(c2);
 		setListener(c2);
-		ct.addDataAddress(da2);
+		ct.addDataAddress(da);
 		return ct;
 	}
 

@@ -42,6 +42,8 @@ button中的id为设备编码_btn, 如d1_btn
 						id="v-pills-video-tab" data-toggle="pill" href="#" role="tab">视频监控</a>
 					<a class="nav-link" id="v-pills-alarm-tab"
 						href="../eleInfo/ServletAlarm">报警记录</a> 
+					<a class="nav-link" id="v-pills-alarm-tab"
+						href="../eleInfo/HistoryInfo">历史记录</a> 
 					<a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" 
 						href="#v-pills-settings" role="tab"  aria-controls="v-pills-settings">设置</a>
 				</div>

@@ -10,23 +10,23 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.bairock.iot.eleInfo.AlarmInfo;
-import com.bairock.iot.eleInfo.listener.StartUpListener;
+import com.bairock.iot.eleInfo.HistoryInfo;
+import com.bairock.iot.eleInfo.dao.HistoryInfoDao;
 
 /**
- * Servlet implementation class ServletAlarm
+ * Servlet implementation class HistoryInfo
  */
-@WebServlet("/ServletAlarm")
-public class ServletAlarm extends HttpServlet {
+@WebServlet("/HistoryInfo")
+public class ServletHistoryInfo extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
-		List<AlarmInfo> list = StartUpListener.findAlarmInfo();
-		Collections.reverse(list);
-		request.setAttribute("alarms", list);
-		request.getRequestDispatcher("/AlarmInfo.jsp").forward(request, response);
+		List<HistoryInfo> histories = new HistoryInfoDao().findAll();
+		Collections.reverse(histories);
+		request.setAttribute("histories", histories);
+		request.getRequestDispatcher("/historyInfo.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

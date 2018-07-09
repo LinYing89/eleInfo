@@ -2,7 +2,7 @@
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://java.sun.com/xml/ns/persistence  http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
              version="2.0">
-	<persistence-unit name="intelDev">
+	<persistence-unit name="eleinfo">
 		<class>com.bairock.iot.eleInfo.MsgManager</class>
 		<class>com.bairock.iot.eleInfo.Device</class>
 		<class>com.bairock.iot.eleInfo.DevAlarm</class>
@@ -13,6 +13,8 @@
 		<class>com.bairock.iot.eleInfo.DataAddress</class>
 		<class>com.bairock.iot.eleInfo.Omnibus</class>
 		<class>com.bairock.iot.eleInfo.ValueTrigger</class>
+		<class>com.bairock.iot.eleInfo.HistoryInfo</class>
+		<class>com.bairock.iot.eleInfo.Config</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
@@ -20,9 +22,9 @@
 			<property name="javax.persistence.jdbc.user" value="root"/>
 			<property name="javax.persistence.jdbc.password" value="root"/>
 			<property name="hibernate.show_sql" value="true"/>
-			<property name="hibernate.hbm2ddl.auto" value="create"/>
+<!-- 			<property name="hibernate.hbm2ddl.auto" value="create"/> -->
 <!-- 			<property name="hibernate.hbm2ddl.auto" value="update"/> -->
-<!--  			<property name="hibernate.hbm2ddl.auto" value="none"/> -->
+ 			<property name="hibernate.hbm2ddl.auto" value="none"/>
 		</properties>
 	</persistence-unit>
 </persistence>

@@ -1,5 +1,6 @@
 package com.bairock.iot.eleInfo.communication;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +11,9 @@ import com.bairock.iot.eleInfo.AlarmInfo;
 import com.bairock.iot.eleInfo.DevAlarm;
 import com.bairock.iot.eleInfo.Device;
 import com.bairock.iot.eleInfo.Device.OnValueChangedListener;
+import com.bairock.iot.eleInfo.HistoryInfo;
 import com.bairock.iot.eleInfo.dao.DeviceDao;
+import com.bairock.iot.eleInfo.dao.HistoryInfoDao;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -21,6 +24,11 @@ public class MyOnValueChangedListener implements OnValueChangedListener {
 	@Override
 	public void onValueChanged(Device device, float value) {
 		logger.info("值改变:" + device.getCoding() + " value:" + value);
+		
+		//添加历史记录
+		HistoryInfo hi = new HistoryInfo(new Date(), device, value);
+		new HistoryInfoDao().add(hi);
+		
 		Map<String, Object> map = new HashMap<>();
 		map.put("id", 0);
 		map.put("coding", device.getCoding());
@@ -43,6 +51,7 @@ public class MyOnValueChangedListener implements OnValueChangedListener {
 				ai.setInfo(device.getName() + " 报警解除");
 			}
 			device.addAlarmInfo(ai);
+			Collections.sort(device.getListAlarmInfo());
 			new DeviceDao().update(device);
 		}
 	}

@@ -102,7 +102,8 @@ public class Device {
 	}
 
 	public void setValue(float value) {
-		if(this.value != value) {
+		//温湿度差别大于0.5才更新,否则微小的变化也会记在历史记录种,导致数据过多,开关量的变化时1-0
+		if(Math.abs(this.value - value) > 0.5) {
 			this.value = value;
 			if(null != onValueChangedListener) {
 				onValueChangedListener.onValueChanged(this, value);

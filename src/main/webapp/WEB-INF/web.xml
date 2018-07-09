@@ -7,12 +7,12 @@
   <servlet>
   	<description>
   	</description>
-  	<display-name>ChangeTriggerValue</display-name>
-  	<servlet-name>ChangeTriggerValue</servlet-name>
-  	<servlet-class>com.bairock.iot.eleInfo.servlet.ChangeTriggerValue</servlet-class>
+  	<display-name>ServletIndex</display-name>
+  	<servlet-name>ServletIndex</servlet-name>
+  	<servlet-class>com.bairock.iot.eleInfo.servlet.ServletIndex</servlet-class>
   </servlet>
   <servlet-mapping>
-  	<servlet-name>ChangeTriggerValue</servlet-name>
-  	<url-pattern>/ChangeTriggerValue</url-pattern>
+  	<servlet-name>ServletIndex</servlet-name>
+  	<url-pattern>/ServletIndex</url-pattern>
   </servlet-mapping>
 </web-app>

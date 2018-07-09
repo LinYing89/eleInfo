@@ -85,8 +85,32 @@ public class MsgManager {
 	}
 	
 	public void handler(byte[] by) {
-		Omnibus omnibus = findOmnibus(by[0]);
-		byte[] by1 = Arrays.copyOfRange(by, 1, by.length);
-		omnibus.handler(by1);
+		
+		//去掉校验码
+		byte[] byAllData = Arrays.copyOfRange(by, 0, by.length - 2);
+		
+		int index = 0;
+		
+		int byStart = 0;
+		while(index < byAllData.length) {
+			byStart = index;
+			//index指到数据长度第一个字节
+			index += 4;
+			int dataLen = byAllData[index] << 8 | byAllData[index + 1];
+			//index指到数据长度第二字节
+			index++;
+			//index指到数据最后一个字节
+			index += dataLen;
+			byte[] byMsgOne = Arrays.copyOfRange(byAllData, byStart, index + 1);
+			Omnibus omnibus = findOmnibus(byMsgOne[0]);
+			byte[] by1 = Arrays.copyOfRange(byMsgOne, 1, byMsgOne.length);
+			omnibus.handler(by1);
+			//index指到报文2第一个字节
+			index++;
+		}
+		
+//		Omnibus omnibus = findOmnibus(by[0]);
+//		byte[] by1 = Arrays.copyOfRange(by, 1, by.length);
+//		omnibus.handler(by1);
 	}
 }

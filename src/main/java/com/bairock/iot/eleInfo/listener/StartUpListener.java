@@ -13,6 +13,7 @@ import javax.servlet.ServletContextListener;
 
 import com.bairock.iot.eleInfo.AlarmInfo;
 import com.bairock.iot.eleInfo.CollectorTerminal;
+import com.bairock.iot.eleInfo.Config;
 import com.bairock.iot.eleInfo.DataAddress;
 import com.bairock.iot.eleInfo.Device;
 import com.bairock.iot.eleInfo.MsgManager;
@@ -22,6 +23,7 @@ import com.bairock.iot.eleInfo.communication.MyOnTriggedChangedListener;
 import com.bairock.iot.eleInfo.communication.MyOnValueChangedListener;
 import com.bairock.iot.eleInfo.communication.MyServer;
 import com.bairock.iot.eleInfo.communication.MyWebSocketHelper;
+import com.bairock.iot.eleInfo.dao.ConfigDao;
 import com.bairock.iot.eleInfo.dao.MsgManagerDao;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,6 +38,7 @@ public class StartUpListener implements ServletContextListener {
 	public static EntityManager eManager = null;
 	
 	public static List<MsgManager> listManager = null;
+	public static Config config;
 	
 	public static Device d1;
 	public static Device d2;
@@ -54,7 +57,10 @@ public class StartUpListener implements ServletContextListener {
     	em = Persistence.createEntityManagerFactory("eleinfo");
     	eManager = em.createEntityManager();
     	listManager = new MsgManagerDao().findAll();
+    	config = new ConfigDao().find();
+    	
     	setListener();
+    	MyServer.PORT = config.getDevicePort();
     	myServer = new MyServer();
     	try {
 			myServer.run();

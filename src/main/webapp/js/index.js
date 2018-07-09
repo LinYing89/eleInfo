@@ -157,9 +157,10 @@ function sendMessage() {
 
 }
 
+var serverIp = '${serverIp}';
 var websocket = null;
 if('WebSocket' in window) {
-	websocket = new WebSocket("ws://192.168.1.116/eleInfo/websocket");
+	websocket = new WebSocket("ws://" + "192.168.1.116:80" + "/eleInfo/websocket");
 } else {
 	alert("浏览器不支持websocket");
 }

@@ -99,10 +99,9 @@ public class DataAddress {
 			findDevice("d1").setValue(byData >> 4 & 1);
 			findDevice("d2").setValue(byData >> 5 & 1);
 			findDevice("d3").setValue(byData >> 6 & 1);
-		}else if(num == 0x12) {
-			findDevice("c1").setValue(bytesToInt(by));
-		}else if(num == 0x13) {
-			findDevice("c2").setValue(bytesToInt(by));
+		}else if(num == 0) {
+			findDevice("c1").setValue(bytesToInt(new byte[] {by[0], by[1]}));
+			findDevice("c2").setValue(bytesToInt(new byte[] {by[2], by[3]}));
 		}
 	}
 	

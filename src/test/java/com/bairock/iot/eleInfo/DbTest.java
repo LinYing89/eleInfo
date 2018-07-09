@@ -16,14 +16,14 @@ public class DbTest {
 		// 通信管理机
 		MsgManager manager = db.createMsgManager();
 		
-		EntityManagerFactory em = Persistence.createEntityManagerFactory("intelDev");
+		EntityManagerFactory em = Persistence.createEntityManagerFactory("eleinfo");
 
 		EntityManager eManager = em.createEntityManager();
 		eManager.getTransaction().begin();
 
 		eManager.persist(manager);
 		eManager.getTransaction().commit();
-		eManager.close();
+		//eManager.close();
 
 //		EntityManager eManager1 = em.createEntityManager();
 //		eManager1.getTransaction().begin();
@@ -31,6 +31,15 @@ public class DbTest {
 //		eManager1.getTransaction().commit();
 //		eManager1.close();
 
+		Config config = new Config();
+		config.setDevicePort(20000);
+		config.setServerIp("192.168.1.116");
+		
+		eManager.getTransaction().begin();
+		eManager.persist(config);
+		eManager.getTransaction().commit();
+		eManager.close();
+		
 		em.close();
 	}
 
@@ -83,8 +92,8 @@ public class DbTest {
 	
 	public CollectorTerminal createCollectorTerminal2() {
 		CollectorTerminal ct = new CollectorTerminal();
-		ct.setNum(2);
-		DataAddress da = createDataAddress(0x12);
+		ct.setNum(0x21);
+		DataAddress da = createDataAddress(0);
 		DevCollector c1 = new DevCollector("c1", "温度");
 		ValueTrigger trigger = new ValueTrigger();
 		trigger.setEnable(true);
@@ -103,12 +112,11 @@ public class DbTest {
 		trigger2.setInfo("当温度低于23度时关闭风机");
 		c1.addValueTrigger(trigger2);
 		da.addDevice(c1);
-		ct.addDataAddress(da);
 		
-		DataAddress da2 = createDataAddress(0x13);
 		DevCollector c2 = new DevCollector("c2", "湿度");
-		da2.addDevice(c2);
-		ct.addDataAddress(da2);
+		da.addDevice(c2);
+		
+		ct.addDataAddress(da);
 		return ct;
 	}
 	public DataAddress createDataAddress(int num) {
