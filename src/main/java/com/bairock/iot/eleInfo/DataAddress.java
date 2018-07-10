@@ -91,17 +91,24 @@ public class DataAddress {
 	}
 	
 	public void handler(byte[] by) {
+		if(null == by || by.length < 1) {
+			return;
+		}
 		if(num == 0x200) {
 			byte byData = by[1];
 			findDevice("a1").setValue(byData & 1);
 			findDevice("a3").setValue(byData >> 1 & 1);
 			findDevice("a2").setValue(byData >> 2 & 1);
-			findDevice("d1").setValue(byData >> 4 & 1);
-			findDevice("d2").setValue(byData >> 5 & 1);
-			findDevice("d3").setValue(byData >> 6 & 1);
+			findDevice("d1").setValue(byData >> 5 & 1);
+			findDevice("d2").setValue(byData >> 6 & 1);
+			findDevice("d3").setValue(byData >> 7 & 1);
 		}else if(num == 0) {
-			findDevice("c1").setValue(bytesToInt(new byte[] {by[0], by[1]}));
-			findDevice("c2").setValue(bytesToInt(new byte[] {by[2], by[3]}));
+			if(by.length >= 2) {
+				findDevice("c1").setValue(bytesToInt(new byte[] {by[0], by[1]}) / 100f);
+			}
+			if(by.length >= 4) {
+				findDevice("c2").setValue(bytesToInt(new byte[] {by[2], by[3]}) / 100f);
+			}
 		}
 	}
 	

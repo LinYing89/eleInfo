@@ -96,6 +96,9 @@ public class CollectorTerminal {
 		int addrNum = by[0] << 8 | by[1];
 		DataAddress addr = findDataAddress(addrNum);
 		int dataLen = by[2] << 8 | by[3];
+		if(dataLen == 0) {
+			return;
+		}
 		byte[] byData = Arrays.copyOfRange(by, 4, dataLen + 4);
 		addr.handler(byData);
 	}
