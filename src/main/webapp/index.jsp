@@ -16,10 +16,18 @@ button中的id为设备编码_btn, 如d1_btn
 <meta charset="UTF-8" />
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+<meta http-equiv="Expires" content="0">
+<meta http-equiv="kiben" content="no-cache">
+
 <link rel="stylesheet"
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
 	integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
 	crossorigin="anonymous" />
+
+<script type="text/javascript">
+		var ser = '<%=request.getAttribute("serverIp")%>';
+</script>
 <title></title>
 </head>
 
@@ -41,11 +49,11 @@ button中的id为设备编码_btn, 如d1_btn
 						aria-selected="true">设备</a> <a class="nav-link"
 						id="v-pills-video-tab" data-toggle="pill" href="#" role="tab">视频监控</a>
 					<a class="nav-link" id="v-pills-alarm-tab"
-						href="../eleInfo/ServletAlarm">报警记录</a> 
-					<a class="nav-link" id="v-pills-alarm-tab"
-						href="../eleInfo/HistoryInfo">历史记录</a> 
-					<a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" 
-						href="#v-pills-settings" role="tab"  aria-controls="v-pills-settings">设置</a>
+						href="../eleInfo/ServletAlarm">报警记录</a> <a class="nav-link"
+						id="v-pills-alarm-tab" href="../eleInfo/HistoryInfo">历史记录</a> <a
+						class="nav-link" id="v-pills-settings-tab" data-toggle="pill"
+						href="#v-pills-settings" role="tab"
+						aria-controls="v-pills-settings">设置</a>
 				</div>
 			</div>
 			<div class="col">
@@ -54,7 +62,7 @@ button中的id为设备编码_btn, 如d1_btn
 						role="tabpanel" aria-labelledby="v-pills-dev-tab">
 						<div class="row justify-content-center">
 
-							<div class="col-4">
+							<div class="col-6">
 								<div id="a1" class="card" style="width: 180px">
 									<img id="a1_img" class="card-img-top bg-info "
 										src="img/light.png" style="height: 80px"></img>
@@ -66,7 +74,7 @@ button中的id为设备编码_btn, 如d1_btn
 									</div>
 								</div>
 							</div>
-							<div class="col-4">
+							<div class="col-6">
 								<div class="card " style="width: 180px">
 									<img id="d1_img" class="card-img-top bg-success "
 										src="img/fan.png" style="height: 80px"></img>
@@ -82,7 +90,7 @@ button中的id为设备编码_btn, 如d1_btn
 						<br />
 						<div class="row justify-content-center">
 
-							<div class="col-4">
+							<div class="col-6">
 								<div class="card" style="width: 180px">
 									<img id="a2_img" class="card-img-top bg-danger "
 										src="img/gas.png" style="height: 80px"></img>
@@ -94,7 +102,7 @@ button中的id为设备编码_btn, 如d1_btn
 									</div>
 								</div>
 							</div>
-							<div class="col-4">
+							<div class="col-6">
 								<div class="card " style="width: 180px">
 									<img id="d2_img" class="card-img-top bg-info "
 										src="img/light.png" style="height: 80px"></img>
@@ -110,7 +118,7 @@ button中的id为设备编码_btn, 如d1_btn
 						<br />
 						<div class="row justify-content-center">
 
-							<div class="col-4">
+							<div class="col-6">
 								<div class="card" style="width: 180px">
 									<img id="a3_img" class="card-img-top bg-info "
 										src="img/light.png" style="height: 80px"></img>
@@ -122,7 +130,7 @@ button中的id为设备编码_btn, 如d1_btn
 									</div>
 								</div>
 							</div>
-							<div class="col-4">
+							<div class="col-6">
 								<div class="card " style="width: 180px">
 									<img id="d3_img" class="card-img-top bg-info "
 										src="img/light.png" style="height: 80px"></img>
@@ -158,7 +166,8 @@ button中的id为设备编码_btn, 如d1_btn
 								<div class="input-group-append">
 									<span class="input-group-text">当温度大于</span>
 								</div>
-								<input name="tem_great_value" id="tem_great_value" type="text" class="form-control"
+								<input name="tem_great_value" id="tem_great_value" type="text"
+									class="form-control"
 									aria-label="Amount (to the nearest dollar)">
 								<div class="input-group-append">
 									<span class="input-group-text">℃ </span> <span
@@ -170,7 +179,8 @@ button中的id为设备编码_btn, 如d1_btn
 								<div class="input-group-append">
 									<span class="input-group-text">当温度低于</span>
 								</div>
-								<input name="tem_less_value" id="tem_less_value" type="text" class="form-control"
+								<input name="tem_less_value" id="tem_less_value" type="text"
+									class="form-control"
 									aria-label="Amount (to the nearest dollar)">
 								<div class="input-group-append">
 									<span class="input-group-text">℃ </span> <span

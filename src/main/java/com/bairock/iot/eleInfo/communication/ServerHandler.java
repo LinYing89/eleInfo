@@ -71,7 +71,9 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 	}
 
 	public static void send(byte[] by) {
-		channel.writeAndFlush(Unpooled.copiedBuffer(by));
+		if(null != channel) {
+			channel.writeAndFlush(Unpooled.copiedBuffer(by));
+		}
 	}
 	
 	public static String bytesToHexString(byte[] src) {

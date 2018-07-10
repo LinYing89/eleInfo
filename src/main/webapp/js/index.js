@@ -21,10 +21,14 @@ var d3_btn;
 
 var tem_great_value;
 var tem_less_value;
-	
+
+var websocket = null;
+var heart;
 window.onload = prepare;
 
-function prepare() {		
+function prepare() {
+	initWebSocket();
+
 	a1_img = document.getElementById("a1_img");
 	a1_txt = document.getElementById("a1_txt");
 	a2_img = document.getElementById("a2_img");
@@ -43,15 +47,11 @@ function prepare() {
 	d1_btn = document.getElementById("d1_btn");
 	d2_btn = document.getElementById("d2_btn");
 	d3_btn = document.getElementById("d3_btn");
-	
+
 	tem_great_value = document.getElementById("tem_great_value");
 	tem_less_value = document.getElementById("tem_less_value");
 
 	var btnSubmit = document.getElementById("btn_submit");
-	
-	d1_btn.onclick = function() {
-		alert("function");
-	}
 
 	d1_btn.onclick = function() {
 		ctrlClick(0);
@@ -72,27 +72,30 @@ function prepare() {
 
 function ctrlClick(which) {
 
-	switch(which) {
-		case 0:
-			//00 00 00 00 00 04 00 00 05 00 10 FF 00 ff ff
-			var by = [00, 00, 00, 00, 00, 04, 00, 00, 05, 00, 10, 0xFF, 00, 0xff, 0xff];
-			send("d1");
-			break;
-		case 1:
-			send("d2");
-			break;
-		case 2:
-			send("d3");
-			break;
+	switch (which) {
+	case 0:
+		send("d1");
+		break;
+	case 1:
+		send("d2");
+		break;
+	case 2:
+		send("d3");
+		break;
 	}
 }
 
-//格式 {"coding":"a1", "value":1.0}
+// 格式 {"coding":"a1", "value":1.0}
 function analysis(message) {
+	//心跳
+	if(message == "H"){
+		return;
+	}
+	
 	var obj = JSON.parse(message);
 	var value = obj.value;
-	if(obj.id == 0){
-	switch(obj.coding) {
+	if (obj.id == 0) {
+		switch (obj.coding) {
 		case "a1":
 			alarm(a1_img, a1_txt, value);
 			break;
@@ -117,21 +120,21 @@ function analysis(message) {
 		case "c2":
 			c2.innerText = value;
 			break;
-	}
-	}else if(obj.id == 1){
-		if(obj.symbol == "GREAT"){
+		}
+	} else if (obj.id == 1) {
+		if (obj.symbol == "GREAT") {
 			tem_great_value.value = value;
-		}else if(obj.symbol == "LESS"){
+		} else if (obj.symbol == "LESS") {
 			tem_less_value.value = value;
 		}
-	}else if(obj.id == 2){
+	} else if (obj.id == 2) {
 		alert("保存成功");
 	}
 }
 
-//0报警,1不报警
+// 0报警,1不报警
 function alarm(img, txt, value) {
-	if(value == 0) {
+	if (value == 0) {
 		img.setAttribute("class", "card-img-top bg-danger");
 		txt.innerText = "异常";
 	} else {
@@ -140,9 +143,9 @@ function alarm(img, txt, value) {
 	}
 }
 
-//0开,1关
+// 0开,1关
 function device(img, txt, value, btn) {
-	if(value == 0) {
+	if (value == 0) {
 		img.setAttribute("class", "card-img-top bg-success");
 		txt.innerText = "开";
 		btn.setAttribute("class", "col m-1 btn btn-success");
@@ -157,27 +160,40 @@ function sendMessage() {
 
 }
 
-var serverIp = '${serverIp}';
-var websocket = null;
-if('WebSocket' in window) {
-	websocket = new WebSocket("ws://" + "192.168.1.116:80" + "/eleInfo/websocket");
-} else {
-	alert("浏览器不支持websocket");
+function initWebSocket() {
+	// 变量ser在index.jsp文件中初始化,读取request的参数需要在jsp文件中
+	if ('WebSocket' in window) {
+		websocket = new WebSocket("ws://" + ser + "/eleInfo/websocket");
+	} else {
+		alert("浏览器不支持websocket");
+	}
+
+	websocket.onerror = function() {
+
+	};
+
+	websocket.onopen = function() {
+		send("rf");
+		//开启定时心跳
+		heart = self.setInterval("sendHeart()",5000);
+	};
+
+	websocket.onmessage = function(event) {
+		analysis(event.data);
+	};
+
+	websocket.onclose = function() {
+		//关闭定时心跳
+		if(heart != null){
+			self.clearInterval(heart)
+		}
+	};
+
 }
 
-websocket.onerror = function() {
-	
-};
-
-websocket.onopen = function() {
-	send("rf");
-};
-
-websocket.onmessage = function(event) {
-	analysis(event.data);
-};
-
-websocket.onclose = function() {};
+function sendHeart(){
+	send("H");
+}
 
 function clearTime() {
 	closeWebSocket();
@@ -188,7 +204,9 @@ function closeWebSocket() {
 }
 
 function send(message) {
-	websocket.send(message);
+	if (null != websocket) {
+		websocket.send(message);
+	}
 }
 
 window.onunload = clearTime;

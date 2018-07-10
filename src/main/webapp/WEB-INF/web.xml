@@ -4,15 +4,4 @@
   <listener>
   	<listener-class>com.bairock.iot.eleInfo.listener.StartUpListener</listener-class>
   </listener>
-  <servlet>
-  	<description>
-  	</description>
-  	<display-name>ServletIndex</display-name>
-  	<servlet-name>ServletIndex</servlet-name>
-  	<servlet-class>com.bairock.iot.eleInfo.servlet.ServletIndex</servlet-class>
-  </servlet>
-  <servlet-mapping>
-  	<servlet-name>ServletIndex</servlet-name>
-  	<url-pattern>/ServletIndex</url-pattern>
-  </servlet-mapping>
 </web-app>
