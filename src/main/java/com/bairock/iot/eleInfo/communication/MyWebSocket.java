@@ -103,15 +103,15 @@ public class MyWebSocket {
 		switch (msg) {
 		case "d1":
 			action = StartUpListener.getAction(StartUpListener.d1);
-			by = new byte[] { 00, 07, 00, 00, 00, 04, 00, 00, 05, 00, 04, action, 00};
+			by = new byte[] { 00, 07, 00, 00, 00, 04, 00, 00, 05, 00, 05, action, 00};
 			break;
 		case "d2":
 			action = StartUpListener.getAction(StartUpListener.d2);
-			by = new byte[] { 00, 07, 00, 00, 00, 04, 00, 00, 05, 00, 05, action, 00};
+			by = new byte[] { 00, 07, 00, 00, 00, 04, 00, 00, 05, 00, 06, action, 00};
 			break;
 		case "d3":
 			action = StartUpListener.getAction(StartUpListener.d3);
-			by = new byte[] { 00, 07, 00, 00, 00, 04, 00, 00, 05, 00, 06, action, 00};
+			by = new byte[] { 00, 07, 00, 00, 00, 04, 00, 00, 05, 00, 07, action, 00};
 			break;
 		}
 		byMsg = StartUpListener.createByteMsg(by);

@@ -27,6 +27,7 @@ button中的id为设备编码_btn, 如d1_btn
 
 <script type="text/javascript">
 		var ser = '<%=request.getAttribute("serverIp")%>';
+		//ser = "123.206.104.15"
 </script>
 <title></title>
 </head>
@@ -35,8 +36,8 @@ button中的id为设备编码_btn, 如d1_btn
 	<nav
 		class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-between">
 		<span class="navbar-text">家得福超市变电站监控系统</span> <span
-			class="navbar-text">温度:<label id="c1">26</label>&nbsp;&nbsp;&nbsp;&nbsp;湿度:<label
-			id="c2">50</label></span>
+			class="navbar-text">温度:<label id="c1">26</label>℃&nbsp;&nbsp;&nbsp;&nbsp;湿度:<label
+			id="c2">50</label>%</span>
 	</nav>
 	<div class="container">
 		<br />
