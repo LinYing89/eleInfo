@@ -66,7 +66,7 @@ button中的id为设备编码_btn, 如d1_btn
 							<div class="col-6">
 								<div id="a1" class="card" style="width: 180px">
 									<img id="a1_img" class="card-img-top bg-info "
-										src="img/light.png" style="height: 80px"></img>
+										src="img/door.png" style="height: 80px"></img>
 									<div class="card-footer text-muted">
 										<div class="row justify-content-center ">
 											<div class="col-6">门&nbsp;&nbsp;禁</div>
@@ -122,7 +122,7 @@ button中的id为设备编码_btn, 如d1_btn
 							<div class="col-6">
 								<div class="card" style="width: 180px">
 									<img id="a3_img" class="card-img-top bg-info "
-										src="img/light.png" style="height: 80px"></img>
+										src="img/water.png" style="height: 80px"></img>
 									<div class="card-footer text-muted">
 										<div class="row justify-content-center ">
 											<div class="col-6">水&nbsp;&nbsp;浸</div>
@@ -134,7 +134,7 @@ button中的id为设备编码_btn, 如d1_btn
 							<div class="col-6">
 								<div class="card " style="width: 180px">
 									<img id="d3_img" class="card-img-top bg-info "
-										src="img/light.png" style="height: 80px"></img>
+										src="img/air.png" style="height: 80px"></img>
 									<div class="card-footer text-muted">
 										<div class="row justify-content-center ">
 											<div class="col-6">空&nbsp;&nbsp;调</div>
