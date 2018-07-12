@@ -96,7 +96,12 @@ public class DataAddress {
 		}
 		if(num == 0x200) {
 			byte byData = by[1];
-			findDevice("a1").setValue(byData & 1);
+			//门禁的值相反,值1表示门开,报警,值0表示门关,
+			//这里将其反过来,与其他设备处理方法一致,但分析数据时要注意值得相反
+			float a1Value = byData & 1;
+			a1Value = a1Value == 0 ? 1 : 0;
+			findDevice("a1").setValue(a1Value);
+			
 			findDevice("a3").setValue(byData >> 1 & 1);
 			findDevice("a2").setValue(byData >> 2 & 1);
 			findDevice("d1").setValue(byData >> 5 & 1);

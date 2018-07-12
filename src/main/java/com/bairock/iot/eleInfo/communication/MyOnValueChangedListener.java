@@ -32,7 +32,7 @@ public class MyOnValueChangedListener implements OnValueChangedListener {
 		Map<String, Object> map = new HashMap<>();
 		map.put("id", 0);
 		map.put("coding", device.getCoding());
-		map.put("value", device.getValue());
+		map.put("value", value);
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			String json = mapper.writeValueAsString(map);
