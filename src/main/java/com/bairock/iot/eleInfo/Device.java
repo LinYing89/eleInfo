@@ -157,7 +157,7 @@ public class Device {
 		listValueTrigger.remove(valueTrigger);
 	}
 	
-	public void handler(byte by) {
+	public void handler(byte[] by) {
 		
 	}
 	

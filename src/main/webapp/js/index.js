@@ -18,6 +18,26 @@ var c2;
 var d1_btn;
 var d2_btn;
 var d3_btn;
+//A相电流
+var li_axA;
+//B相电流
+var li_bxA;
+//C相电流
+var li_cxA;
+//A相电压
+var li_axV;
+//B相电压
+var li_bxV;
+//C相电压
+var li_cxV;
+//功率因数
+var li_yinshu;
+var li_axyg;
+var li_axwg;
+var li_bxyg;
+var li_bxwg;
+var li_zyg;
+var li_zwg;
 
 var tem_great_value;
 var tem_less_value;
@@ -27,7 +47,6 @@ var heart;
 window.onload = prepare;
 
 function prepare() {
-	initWebSocket();
 
 	a1_img = document.getElementById("a1_img");
 	a1_txt = document.getElementById("a1_txt");
@@ -47,6 +66,23 @@ function prepare() {
 	d1_btn = document.getElementById("d1_btn");
 	d2_btn = document.getElementById("d2_btn");
 	d3_btn = document.getElementById("d3_btn");
+	
+	li_axA = document.getElementById("axA");
+	//alert(li_axA);
+	//li_axA.innerText="3";
+	//li_axA.innerText=123;
+	li_bxA = document.getElementById("bxA");
+	li_cxA = document.getElementById("cxA");
+	li_axV = document.getElementById("axV");
+	li_bxV = document.getElementById("bxV");
+	li_cxV = document.getElementById("cxV");
+	li_yinshu = document.getElementById("yinshu");
+	li_axyg = document.getElementById("axyg");
+	li_axwg = document.getElementById("axwg");
+	li_bxyg = document.getElementById("bxyg");
+	li_bxwg = document.getElementById("bxwg");
+	li_zyg = document.getElementById("zyg");
+	li_zwg = document.getElementById("zwg");
 
 	tem_great_value = document.getElementById("tem_great_value");
 	tem_less_value = document.getElementById("tem_less_value");
@@ -68,6 +104,11 @@ function prepare() {
 		json.less = tem_less_value.value;
 		send(JSON.stringify(json));
 	};
+	
+	initWebSocket();
+	
+	//alert("test1");
+	//test1();
 }
 
 function ctrlClick(which) {
@@ -87,6 +128,7 @@ function ctrlClick(which) {
 
 // 格式 {"coding":"a1", "value":1.0}
 function analysis(message) {
+	//alert(message);
 	//心跳
 	if(message == "H"){
 		return;
@@ -119,6 +161,21 @@ function analysis(message) {
 			break;
 		case "c2":
 			c2.innerText = value;
+			break;
+			case "ele":
+			li_axA.innerText = obj.axA;
+			li_bxA.innerText = obj.bxA;
+			li_cxA.innerText = obj.cxA;
+			li_axV.innerText = obj.axV;
+			li_bxV.innerText = obj.bxV;
+			li_cxV.innerText = obj.cxV;
+			li_yinshu.innerText = obj.yinshu;
+			li_axyg.innerText = obj.axyg;
+			li_axwg.innerText = obj.axwg;
+			li_bxyg.innerText = obj.bxyg;
+			li_bxwg.innerText = obj.bxwg;
+			li_zyg.innerText = obj.zyg;
+			li_zwg.innerText = obj.zwg;
 			break;
 		}
 	} else if (obj.id == 1) {
@@ -163,6 +220,7 @@ function sendMessage() {
 function initWebSocket() {
 	// 变量ser在index.jsp文件中初始化,读取request的参数需要在jsp文件中
 	if ('WebSocket' in window) {
+		ser="localhost";
 		websocket = new WebSocket("ws://" + ser + "/eleInfo/websocket");
 	} else {
 		alert("浏览器不支持websocket");
@@ -200,7 +258,9 @@ function clearTime() {
 }
 
 function closeWebSocket() {
-	websocket.close();
+	if(websocket != null){
+		websocket.close();
+	}
 }
 
 function send(message) {
@@ -212,13 +272,26 @@ function send(message) {
 window.onunload = clearTime;
 
 function test1() {
-	var t1 = '{"coding":"a1","value":1.0}'
+	var t1 = '{"id":0,"coding":"axA","value":1}'
+	alert(t1);
 	analysis(t1);
 	//	
-	var t2 = '{"coding":"a2","value":0}'
+	var t2 = '{"id":0,"coding":"bxA","value":2}'
 	analysis(t2);
 
-	var t3 = '{"coding":"d1","value":1}'
+	var t3 = '{"id":0,"coding":"cxA","value":3}'
+	analysis(t3);
+	
+	t1 = '{"id":0,"coding":"axV","value":4}'
+	analysis(t1);
+	//	
+	t2 = '{"id":0,"coding":"bxV","value":5}'
+	analysis(t2);
+
+	t3 = '{"id":0,"coding":"cxV","value":6}'
+	analysis(t3);
+	
+	t3 = '{"id":0,"coding":"yinshu","value":7}'
 	analysis(t3);
 }
 

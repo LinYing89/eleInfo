@@ -16,6 +16,8 @@ import com.bairock.iot.eleInfo.CollectorTerminal;
 import com.bairock.iot.eleInfo.Config;
 import com.bairock.iot.eleInfo.DataAddress;
 import com.bairock.iot.eleInfo.Device;
+import com.bairock.iot.eleInfo.EleInfo;
+import com.bairock.iot.eleInfo.Electrical;
 import com.bairock.iot.eleInfo.MsgManager;
 import com.bairock.iot.eleInfo.Omnibus;
 import com.bairock.iot.eleInfo.ValueTrigger;
@@ -129,6 +131,26 @@ public class StartUpListener implements ServletContextListener {
     				for(DataAddress d : c.getListDataAddress()) {
     					for(Device dev : d.getListDevice()) {
     						Map<String, Object> map = new HashMap<>();
+    						if(dev instanceof Electrical) {
+    							EleInfo ei = ((Electrical) dev).getEleInfo();
+    							map.put("id", 0);
+    							map.put("coding", "ele");
+    							map.put("axA", ei.getAxA());
+    							map.put("bxA", ei.getAxA());
+    							map.put("cxA", ei.getAxA());
+    							map.put("axV", ei.getAxA());
+    							map.put("bxV", ei.getAxA());
+    							map.put("cxV", ei.getAxA());
+    							map.put("yinshu", ei.getAxA());
+    							map.put("axyg", ei.axYouGongPower());
+    							map.put("axwg", ei.axWuGongPower());
+    							map.put("bxyg", ei.bxYouGongPower());
+    							map.put("bxwg", ei.bxWuGongPower());
+    							map.put("zyg", ei.zongYouGongPower());
+    							map.put("zwg", ei.zongWuGongPower());
+    							sendMap(map);
+    							continue;
+    						}
     						//0表示设备状态或值
     						map.put("id", 0);
     						map.put("coding", dev.getCoding());
@@ -151,6 +173,60 @@ public class StartUpListener implements ServletContextListener {
     			}
     		}
     	}
+    }
+    
+    public static void refreshEleInfo() {
+    	for(MsgManager m : listManager) {
+    		for(Omnibus o : m.getListOmnibus()) {
+    			for(CollectorTerminal c : o.getListCollectorTerminal()) {
+    				for(DataAddress d : c.getListDataAddress()) {
+    					for(Device dev : d.getListDevice()) {
+    						Map<String, Object> map = new HashMap<>();
+    						if(dev instanceof Electrical) {
+    							EleInfo ei = ((Electrical) dev).getEleInfo();
+    							map.put("id", 0);
+    							map.put("coding", "ele");
+    							map.put("axA", ei.getAxA());
+    							map.put("bxA", ei.getAxA());
+    							map.put("cxA", ei.getAxA());
+    							map.put("axV", ei.getAxA());
+    							map.put("bxV", ei.getAxA());
+    							map.put("cxV", ei.getAxA());
+    							map.put("yinshu", ei.getAxA());
+    							map.put("axyg", ei.axYouGongPower());
+    							map.put("axwg", ei.axWuGongPower());
+    							map.put("bxyg", ei.bxYouGongPower());
+    							map.put("bxwg", ei.bxWuGongPower());
+    							map.put("zyg", ei.zongYouGongPower());
+    							map.put("zwg", ei.zongWuGongPower());
+    							sendMap(map);
+    							continue;
+    						}
+    					}
+    				}
+    			}
+    		}
+    	}
+    }
+    
+    public static void testEleInfo() {
+    	Map<String, Object> map = new HashMap<>();
+    	map.put("id", 0);
+		map.put("coding", "ele");
+		map.put("axA", 1);
+		map.put("bxA", 2);
+		map.put("cxA", 3);
+		map.put("axV", 4);
+		map.put("bxV", 5);
+		map.put("cxV", 6);
+		map.put("yinshu", 7);
+		map.put("axyg", 8);
+		map.put("axwg", 9);
+		map.put("bxyg", 10);
+		map.put("bxwg", 11);
+		map.put("zyg", 100);
+		map.put("zwg", 33);
+		sendMap(map);
     }
     
     public static void sendMap(Map<String, Object> map) {
