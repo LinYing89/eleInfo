@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.apache.log4j.Logger;
+
 /**
  * 通信管理机
  * @author 44489
@@ -103,6 +105,11 @@ public class MsgManager {
 			index += dataLen;
 			byte[] byMsgOne = Arrays.copyOfRange(byAllData, byStart, index + 1);
 			Omnibus omnibus = findOmnibus(byMsgOne[0]);
+			if(null == omnibus) {
+				Logger logger = Logger.getLogger(this.getClass().getName());
+				logger.error("总线号不存在: num:" + byMsgOne[0]);
+				return;
+			}
 			byte[] by1 = Arrays.copyOfRange(byMsgOne, 1, byMsgOne.length);
 			omnibus.handler(by1);
 			//index指到报文2第一个字节

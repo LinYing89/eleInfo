@@ -35,16 +35,21 @@ public class ServerHandler extends ChannelInboundHandlerAdapter {
 		try {
 			byte[] req = new byte[m.readableBytes()];
 			m.readBytes(req);
+			MyClient.getIns().send(req);
 			logger.info(bytesToHexString(req));
 			int len = (req[0] << 8) | req[1];
 			// 数据有效长度不包括长度字节数和通信管理机字节数,长度字节数=2,通信管理机字节数=4
 			if (req.length != len + 8) {
-				logger.info("长度不匹配");
+				logger.error("长度不匹配");
 				return;
 			}
 			int managerNum = (req[2] << 24) | (req[3] << 16) | (req[4] << 8) | req[5];
 			MsgManager mm = StartUpListener.findMsgManager(managerNum);
 
+			if(mm == null) {
+				logger.error("通信管理机不存在-num:" + managerNum);
+				return;
+			}
 			byte[] by = new byte[len];
 			by = Arrays.copyOfRange(req, 6, req.length);
 			mm.handler(by);

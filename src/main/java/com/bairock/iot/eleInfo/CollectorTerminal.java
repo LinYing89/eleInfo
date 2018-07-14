@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.apache.log4j.Logger;
+
 /**
  * 采集终端
  * @author 44489
@@ -95,6 +97,11 @@ public class CollectorTerminal {
 	public void handler(byte[] by) {
 		int addrNum = by[0] << 8 | by[1];
 		DataAddress addr = findDataAddress(addrNum);
+		if(addr == null) {
+			Logger logger = Logger.getLogger(this.getClass().getName());
+			logger.error("数据地址不存在: num:" + addrNum);
+			return;
+		}
 		int dataLen = by[2] << 8 | by[3];
 		if(dataLen == 0) {
 			return;

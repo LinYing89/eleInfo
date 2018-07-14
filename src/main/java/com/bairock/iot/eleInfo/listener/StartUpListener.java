@@ -21,6 +21,7 @@ import com.bairock.iot.eleInfo.Electrical;
 import com.bairock.iot.eleInfo.MsgManager;
 import com.bairock.iot.eleInfo.Omnibus;
 import com.bairock.iot.eleInfo.ValueTrigger;
+import com.bairock.iot.eleInfo.communication.MyClient;
 import com.bairock.iot.eleInfo.communication.MyOnTriggedChangedListener;
 import com.bairock.iot.eleInfo.communication.MyOnValueChangedListener;
 import com.bairock.iot.eleInfo.communication.MyServer;
@@ -53,6 +54,7 @@ public class StartUpListener implements ServletContextListener {
     	eManager.close();
     	em.close();
     	myServer.close();
+    	MyClient.getIns().closeHandler();
     }
 
     public void contextInitialized(ServletContextEvent arg0)  { 
@@ -62,6 +64,9 @@ public class StartUpListener implements ServletContextListener {
     	config = new ConfigDao().find();
     	
     	setListener();
+    	
+    	MyClient.getIns().link();
+    	
     	MyServer.PORT = config.getDevicePort();
     	myServer = new MyServer();
     	try {

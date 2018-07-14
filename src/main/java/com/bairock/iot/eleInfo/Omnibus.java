@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.apache.log4j.Logger;
+
 /**
  * 总线
  * @author 44489
@@ -93,7 +95,12 @@ public class Omnibus {
 	}
 	
 	public void handler(byte[] by) {
+		Logger logger = Logger.getLogger(this.getClass().getName());
 		CollectorTerminal c = findCollectorTerminal(by[0]);
+		if(c == null) {
+			logger.error("采集终端不存在: num:" + by[0]);
+			return;
+		}
 		byte[] by1 = Arrays.copyOfRange(by, 1, by.length);
 		c.handler(by1);
 	}
