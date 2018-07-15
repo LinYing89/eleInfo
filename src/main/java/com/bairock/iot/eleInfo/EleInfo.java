@@ -97,7 +97,7 @@ public class EleInfo {
 	 * @return
 	 */
 	public float axYouGongPower() {
-		return scale(axA * axV * yinshu / 100);
+		return scale(axA * axV * yinshu / 1000);
 	}
 	
 	/**
@@ -105,7 +105,7 @@ public class EleInfo {
 	 * @return
 	 */
 	public float axWuGongPower() {
-		return scale(axA * axV * (1 - yinshu) / 100);
+		return scale(axA * axV * (1 - yinshu) / 1000);
 	}
 	
 	/**
@@ -113,7 +113,7 @@ public class EleInfo {
 	 * @return
 	 */
 	public float bxYouGongPower() {
-		return scale(bxA * bxV * yinshu / 100);
+		return scale(bxA * bxV * yinshu / 1000);
 	}
 	
 	/**
@@ -121,7 +121,7 @@ public class EleInfo {
 	 * @return
 	 */
 	public float bxWuGongPower() {
-		return scale(bxA * bxV * (1 - yinshu) / 100);
+		return scale(bxA * bxV * (1 - yinshu) / 1000);
 	}
 	
 	/**
@@ -129,7 +129,7 @@ public class EleInfo {
 	 * @return
 	 */
 	public float cxYouGongPower() {
-		return scale(cxA * cxV * yinshu / 100);
+		return scale(cxA * cxV * yinshu / 1000);
 	}
 	
 	/**
@@ -137,7 +137,7 @@ public class EleInfo {
 	 * @return
 	 */
 	public float cxWuGongPower() {
-		return scale(cxA * cxV * (1 - yinshu) / 100);
+		return scale(cxA * cxV * (1 - yinshu) / 1000);
 	}
 	
 	/**
