@@ -37,16 +37,24 @@ public class Electrical extends Device {
 		if(null == by || by.length < 12) {
 			return;
 		}
-		eleInfo.setAxA(by[0] << 8 | by[1]);
-		eleInfo.setBxA(by[2] << 8 | by[3]);
-		eleInfo.setCxA(by[4] << 8 | by[5]);
-		eleInfo.setAxV((by[6] << 8 | by[7]) / 100f);
-		eleInfo.setBxV((by[8] << 8 | by[9]) / 100f);
-		eleInfo.setCxV((by[10] << 8 | by[11]) / 100f);
+		eleInfo.setAxA(toFloat(by[0], by[1], 1));
+		eleInfo.setBxA(toFloat(by[2], by[3], 1));
+		eleInfo.setCxA(toFloat(by[4], by[5], 1));
+		eleInfo.setAxV(toFloat(by[6], by[7], 100f));
+		eleInfo.setBxV(toFloat(by[8], by[9], 100f));
+		eleInfo.setCxV(toFloat(by[10], by[11], 100f));
 		if(by.length >= 14) {
-			eleInfo.setYinshu((by[12] << 8 | by[13]) / 100f);
+			eleInfo.setYinshu(toFloat(by[12], by[13], 100f));
 		}
 		
+	}
+	
+	public static float toFloat(byte b1, byte b2, float xishu) {
+		return (Device.toUnSignInt(b1) << 8 | Device.toUnSignInt(b2)) / xishu;
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(toFloat((byte)0x5c, (byte)0xf8, 100f) + "?");
 	}
 	
 }

@@ -141,18 +141,18 @@ public class StartUpListener implements ServletContextListener {
     							map.put("id", 0);
     							map.put("coding", "ele");
     							map.put("axA", ei.getAxA());
-    							map.put("bxA", ei.getAxA());
-    							map.put("cxA", ei.getAxA());
-    							map.put("axV", ei.getAxA());
-    							map.put("bxV", ei.getAxA());
-    							map.put("cxV", ei.getAxA());
-    							map.put("yinshu", ei.getAxA());
+    							map.put("bxA", ei.getBxA());
+    							map.put("cxA", ei.getCxA());
+    							map.put("axV", ei.getAxV());
+    							map.put("bxV", ei.getBxV());
+    							map.put("cxV", ei.getCxV());
+    							map.put("yinshu", ei.getYinshu());
     							map.put("axyg", ei.axYouGongPower());
     							map.put("axwg", ei.axWuGongPower());
     							map.put("bxyg", ei.bxYouGongPower());
     							map.put("bxwg", ei.bxWuGongPower());
-    							map.put("zyg", ei.zongYouGongPower());
-    							map.put("zwg", ei.zongWuGongPower());
+    							map.put("cxyg", ei.cxYouGongPower());
+    							map.put("cxwg", ei.cxWuGongPower());
     							sendMap(map);
     							continue;
     						}

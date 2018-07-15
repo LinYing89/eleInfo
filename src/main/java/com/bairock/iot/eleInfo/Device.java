@@ -164,4 +164,8 @@ public class Device {
 	public interface OnValueChangedListener {
 		void onValueChanged(Device device, float value);
 	}
+	
+	public static int toUnSignInt(byte by) {
+		return (int)by & 0xff;
+	}
 }

@@ -224,7 +224,7 @@ function device(img, txt, value, btn) {
 function initWebSocket() {
 	// 变量ser在index.jsp文件中初始化,读取request的参数需要在jsp文件中
 	if ('WebSocket' in window) {
-		//ser="localhost";
+//		ser="localhost";
 		websocket = new WebSocket("ws://" + ser + "/eleInfo/websocket");
 	} else {
 		alert("浏览器不支持websocket");
