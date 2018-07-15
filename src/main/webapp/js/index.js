@@ -139,13 +139,13 @@ function analysis(message) {
 	if (obj.id == 0) {
 		switch (obj.coding) {
 		case "a1":
-			alarm(a1_img, a1_txt, value);
+			alarm("a1", a1_img, a1_txt, value);
 			break;
 		case "a2":
-			alarm(a2_img, a2_txt, value);
+			alarm("a2", a2_img, a2_txt, value);
 			break;
 		case "a3":
-			alarm(a3_img, a3_txt, value);
+			alarm("a3", a3_img, a3_txt, value);
 			break;
 		case "d1":
 			device(d1_img, d1_txt, value, d1_btn);
