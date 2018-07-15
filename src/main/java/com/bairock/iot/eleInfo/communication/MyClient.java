@@ -87,6 +87,7 @@ public class MyClient {
         	myClientHandler.send(msg);
         }else {
         	logger.error("转发 not linked");
+        	MyClient.getIns().link();
         }
     }
 }
