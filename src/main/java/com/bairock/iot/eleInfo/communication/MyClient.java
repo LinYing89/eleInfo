@@ -2,6 +2,8 @@ package com.bairock.iot.eleInfo.communication;
 
 import java.util.concurrent.TimeUnit;
 
+import org.apache.log4j.Logger;
+
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -17,8 +19,8 @@ public class MyClient {
 	private static MyClient ins = new MyClient();
 	public boolean linking = false;
 
-	private String nextIp = "192.168.43.238";
-//	private String nextIp = "218.92.24.10";
+//	private String nextIp = "192.168.43.238";
+	private String nextIp = "218.92.24.10";
 	private int nextPort = 9090;
     private Bootstrap b;
 
@@ -63,7 +65,9 @@ public class MyClient {
     
     void setMyClientHandler(MyClientHandler myClientHandler){
         if(this.myClientHandler != null){
-            this.myClientHandler.channel.close();
+        	if(this.myClientHandler.channel != null) {
+        		this.myClientHandler.channel.close();
+        	}
             this.myClientHandler = null;
         }
         this.myClientHandler = myClientHandler;
@@ -77,8 +81,12 @@ public class MyClient {
     }
 
     public void send(byte[] msg){
+    	Logger logger =  Logger.getLogger(this.getClass().getName()); 
         if(null != myClientHandler){
+        	logger.info("转发: " + ServerHandler.bytesToHexString(msg));
         	myClientHandler.send(msg);
+        }else {
+        	logger.error("转发 not linked");
         }
     }
 }

@@ -34,7 +34,7 @@ public class Electrical extends Device {
 
 	@Override
 	public void handler(byte[] by) {
-		if(null == by || by.length < 14) {
+		if(null == by || by.length < 12) {
 			return;
 		}
 		eleInfo.setAxA(by[0] << 8 | by[1]);
@@ -43,7 +43,9 @@ public class Electrical extends Device {
 		eleInfo.setAxV((by[6] << 8 | by[7]) / 100f);
 		eleInfo.setBxV((by[8] << 8 | by[9]) / 100f);
 		eleInfo.setCxV((by[10] << 8 | by[11]) / 100f);
-		eleInfo.setYinshu((by[12] << 8 | by[13]) / 100f);
+		if(by.length >= 14) {
+			eleInfo.setYinshu((by[12] << 8 | by[13]) / 100f);
+		}
 		
 	}
 	

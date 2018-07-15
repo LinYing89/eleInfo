@@ -69,8 +69,8 @@ public class MyWebSocket {
 	private void analysisMessage(String msg) {
 		if(msg.equals("H")) {
 			sendMessage("H");
-//			StartUpListener.refreshEleInfo();
-			StartUpListener.testEleInfo();
+			StartUpListener.refreshEleInfo();
+//			StartUpListener.testEleInfo();
 		}else if (msg.equals("rf")) {
 			refreshValues();
 			return;

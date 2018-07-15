@@ -76,7 +76,7 @@ button中的id为设备编码_btn, 如d1_btn
 										</div>
 									</div>
 									<br />
-									<div class="row justify-content-center">
+									<div class="row">
 
 										<div class="col-6">
 											<div class="card" style="width: 180px">
@@ -102,7 +102,7 @@ button中的id为设备编码_btn, 如d1_btn
 										</div>
 									</div>
 									<br />
-									<div class="row justify-content-center">
+									<div class="row">
 
 										<div class="col-6">
 											<div class="card" style="width: 180px">
@@ -128,13 +128,13 @@ button中的id为设备编码_btn, 如d1_btn
 										</div>
 									</div>
 									<br />
-									<div class="row justify-content-center">
+									<div class="row">
 										<button id="d1_btn" type="button" class="col m-1 btn btn-info">风机启/停</button>
 										<button id="d2_btn" type="button" class="col m-1 btn btn-info">照明开/关</button>
 										<button id="d3_btn" type="button" class="col m-1 btn btn-info">空调开/关</button>
 									</div>
 								</div>
-								<div class="col-4">
+								<div class="col-md-auto">
 									<ul class="list-group">
 										<li class="list-group-item">A相电流:<label id="axA">0</label><span>A</span></li>
 										<li class="list-group-item">B相电流:<span id="bxA">0</span><span>A</span></li>
@@ -147,8 +147,8 @@ button中的id为设备编码_btn, 如d1_btn
 										<li class="list-group-item">A相无功功率:<span id="axwg">0</span></li>
 										<li class="list-group-item">B相有功功率:<span id="bxyg">0</span></li>
 										<li class="list-group-item">B相无功功率:<span id="bxwg">0</span></li>
-										<li class="list-group-item">总有功功率:<span id="zyg">0</span></li>
-										<li class="list-group-item">总无功功率:<span id="zwg">0</span></li>
+										<li class="list-group-item">C相有功功率:<span id="cxyg">0</span></li>
+										<li class="list-group-item">C相无功功率:<span id="cxwg">0</span></li>
 									</ul>
 								</div>
 							</div>

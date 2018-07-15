@@ -111,7 +111,7 @@ public class EleInfo {
 	 * @return
 	 */
 	public float bxYouGongPower() {
-		return bxV * bxV * yinshu;
+		return bxA * bxV * yinshu;
 	}
 	
 	/**

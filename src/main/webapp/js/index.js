@@ -36,8 +36,8 @@ var li_axyg;
 var li_axwg;
 var li_bxyg;
 var li_bxwg;
-var li_zyg;
-var li_zwg;
+var li_cxyg;
+var li_cxwg;
 
 var tem_great_value;
 var tem_less_value;
@@ -81,8 +81,8 @@ function prepare() {
 	li_axwg = document.getElementById("axwg");
 	li_bxyg = document.getElementById("bxyg");
 	li_bxwg = document.getElementById("bxwg");
-	li_zyg = document.getElementById("zyg");
-	li_zwg = document.getElementById("zwg");
+	li_cxyg = document.getElementById("cxyg");
+	li_cxwg = document.getElementById("cxwg");
 
 	tem_great_value = document.getElementById("tem_great_value");
 	tem_less_value = document.getElementById("tem_less_value");
@@ -174,8 +174,8 @@ function analysis(message) {
 			li_axwg.innerText = obj.axwg;
 			li_bxyg.innerText = obj.bxyg;
 			li_bxwg.innerText = obj.bxwg;
-			li_zyg.innerText = obj.zyg;
-			li_zwg.innerText = obj.zwg;
+			li_cxyg.innerText = obj.cxyg;
+			li_cxwg.innerText = obj.cxwg;
 			break;
 		}
 	} else if (obj.id == 1) {
@@ -190,13 +190,21 @@ function analysis(message) {
 }
 
 // 0报警,1不报警
-function alarm(img, txt, value) {
+function alarm(coding, img, txt, value) {
 	if (value == 0) {
 		img.setAttribute("class", "card-img-top bg-danger");
-		txt.innerText = "异常";
+		if(coding == "a1"){
+			txt.innerText = "开";
+		}else{
+			txt.innerText = "异常";
+		}
 	} else {
 		img.setAttribute("class", "card-img-top bg-info");
-		txt.innerText = "正常";
+		if(coding == "a1"){
+			txt.innerText = "关";
+		}else{
+			txt.innerText = "正常";
+		}
 	}
 }
 
@@ -213,14 +221,10 @@ function device(img, txt, value, btn) {
 	}
 }
 
-function sendMessage() {
-
-}
-
 function initWebSocket() {
 	// 变量ser在index.jsp文件中初始化,读取request的参数需要在jsp文件中
 	if ('WebSocket' in window) {
-		ser="localhost";
+		//ser="localhost";
 		websocket = new WebSocket("ws://" + ser + "/eleInfo/websocket");
 	} else {
 		alert("浏览器不支持websocket");
