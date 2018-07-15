@@ -1,5 +1,7 @@
 package com.bairock.iot.eleInfo;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -95,7 +97,7 @@ public class EleInfo {
 	 * @return
 	 */
 	public float axYouGongPower() {
-		return axA * axV * yinshu;
+		return scale(axA * axV * yinshu);
 	}
 	
 	/**
@@ -103,7 +105,7 @@ public class EleInfo {
 	 * @return
 	 */
 	public float axWuGongPower() {
-		return axA * axV * (1 - yinshu);
+		return scale(axA * axV * (1 - yinshu));
 	}
 	
 	/**
@@ -111,7 +113,7 @@ public class EleInfo {
 	 * @return
 	 */
 	public float bxYouGongPower() {
-		return bxA * bxV * yinshu;
+		return scale(bxA * bxV * yinshu);
 	}
 	
 	/**
@@ -119,7 +121,7 @@ public class EleInfo {
 	 * @return
 	 */
 	public float bxWuGongPower() {
-		return bxA * bxV * (1 - yinshu);
+		return scale(bxA * bxV * (1 - yinshu));
 	}
 	
 	/**
@@ -127,7 +129,7 @@ public class EleInfo {
 	 * @return
 	 */
 	public float cxYouGongPower() {
-		return cxA * cxV * yinshu;
+		return scale(cxA * cxV * yinshu);
 	}
 	
 	/**
@@ -135,7 +137,7 @@ public class EleInfo {
 	 * @return
 	 */
 	public float cxWuGongPower() {
-		return cxA * cxV * (1 - yinshu);
+		return scale(cxA * cxV * (1 - yinshu));
 	}
 	
 	/**
@@ -143,7 +145,7 @@ public class EleInfo {
 	 * @return
 	 */
 	public float zongYouGongPower() {
-		return axYouGongPower() + bxYouGongPower() + cxYouGongPower();
+		return scale(axYouGongPower() + bxYouGongPower() + cxYouGongPower());
 	}
 	
 	/**
@@ -151,6 +153,16 @@ public class EleInfo {
 	 * @return
 	 */
 	public float zongWuGongPower() {
-		return axWuGongPower() + bxWuGongPower() + cxWuGongPower();
+		return scale(axWuGongPower() + bxWuGongPower() + cxWuGongPower());
+	}
+	
+	/**
+	 * accurate to the second decimal place
+	 * @param f
+	 * @return
+	 */
+	public static float scale(float f) {
+		BigDecimal b = new BigDecimal(f);
+		return b.setScale(2, BigDecimal.ROUND_HALF_UP).floatValue();
 	}
 }
