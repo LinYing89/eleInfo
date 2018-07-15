@@ -1,5 +1,7 @@
 package com.bairock.iot.eleInfo.communication;
 
+import org.apache.log4j.Logger;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
@@ -9,6 +11,8 @@ import io.netty.handler.timeout.IdleStateEvent;
 
 public class MyClientHandler extends ChannelInboundHandlerAdapter {
 	
+	Logger logger =  Logger.getLogger(this.getClass().getName()); 
+	
     public Channel channel;
     
     @Override
@@ -16,6 +20,7 @@ public class MyClientHandler extends ChannelInboundHandlerAdapter {
     	MyClient.getIns().setMyClientHandler(this);
         channel = ctx.channel();
         MyClient.getIns().linking = false;
+        logger.info(MyClient.getIns().nextIp + "连接成功");
     }
 
     @Override
@@ -32,11 +37,13 @@ public class MyClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         super.exceptionCaught(ctx, cause);
+        logger.info(cause.getMessage());
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         super.channelInactive(ctx);
+        logger.info(MyClient.getIns().nextIp + "连接断开");
         ctx.close();
         channel = null;
         MyClient.getIns().linking = false;
@@ -48,19 +55,23 @@ public class MyClientHandler extends ChannelInboundHandlerAdapter {
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         super.userEventTriggered(ctx, evt);
         if (evt instanceof IdleStateEvent) {  // 2
+        	logger.info(evt);
             ctx.close();
             MyClient.getIns().linking = false;
         }
     }
 
     public void send(byte[] by){
+    	Logger logger =  Logger.getLogger(this.getClass().getName()); 
         try {
             if(null != channel) {
                 channel.writeAndFlush(Unpooled.copiedBuffer(by));
+                logger.error("转发 成功");
             }else {
             	 MyClient.getIns().link();
             }
         }catch (Exception e){
+        	logger.error("转发 失败" + e.getMessage());
             e.printStackTrace();
         }
     }

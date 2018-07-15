@@ -19,8 +19,10 @@ public class MyClient {
 	private static MyClient ins = new MyClient();
 	public boolean linking = false;
 
+	Logger logger =  Logger.getLogger(this.getClass().getName()); 
+	
 //	private String nextIp = "192.168.43.238";
-	private String nextIp = "218.92.24.10";
+	public String nextIp = "218.92.24.10";
 	private int nextPort = 9090;
     private Bootstrap b;
 
@@ -50,15 +52,20 @@ public class MyClient {
     }
 
     public void link(){
-    	if(linking) {
+    	if(linking || null != myClientHandler) {
     		return;
     	}
+    	linking = true;
         try {
+        	logger.error("Start linking");
             // Start the client.
             ChannelFuture channelFuture = b.connect(nextIp, nextPort); // (5)
             // Wait until the connection is closed.
             channelFuture.channel().closeFuture();
         }catch (Exception e){
+        	logger.error("linking error: " + e.getMessage());
+        	linking = false;
+        	myClientHandler = null;
             e.printStackTrace();
         }
     }
@@ -81,13 +88,13 @@ public class MyClient {
     }
 
     public void send(byte[] msg){
-    	Logger logger =  Logger.getLogger(this.getClass().getName()); 
+    	
         if(null != myClientHandler){
-        	logger.info("转发: " + ServerHandler.bytesToHexString(msg));
+        	//logger.info("转发: " + ServerHandler.bytesToHexString(msg));
         	myClientHandler.send(msg);
         }else {
-        	logger.error("转发 not linked");
-        	MyClient.getIns().link();
+        	logger.info("转发 not linked linking=" + MyClient.getIns().linking);
+        	link();
         }
     }
 }
