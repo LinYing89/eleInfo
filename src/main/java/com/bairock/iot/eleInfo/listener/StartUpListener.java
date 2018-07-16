@@ -25,6 +25,7 @@ import com.bairock.iot.eleInfo.communication.MyClient;
 import com.bairock.iot.eleInfo.communication.MyOnTriggedChangedListener;
 import com.bairock.iot.eleInfo.communication.MyOnValueChangedListener;
 import com.bairock.iot.eleInfo.communication.MyServer;
+import com.bairock.iot.eleInfo.communication.MyWebSocket;
 import com.bairock.iot.eleInfo.communication.MyWebSocketHelper;
 import com.bairock.iot.eleInfo.dao.ConfigDao;
 import com.bairock.iot.eleInfo.dao.MsgManagerDao;
@@ -180,7 +181,7 @@ public class StartUpListener implements ServletContextListener {
     	}
     }
     
-    public static void refreshEleInfo() {
+    public static void refreshEleInfo(MyWebSocket socket) {
     	for(MsgManager m : listManager) {
     		for(Omnibus o : m.getListOmnibus()) {
     			for(CollectorTerminal c : o.getListCollectorTerminal()) {
@@ -204,7 +205,15 @@ public class StartUpListener implements ServletContextListener {
     							map.put("bxwg", ei.bxWuGongPower());
     							map.put("cxyg", ei.cxYouGongPower());
     							map.put("cxwg", ei.cxWuGongPower());
-    							sendMap(map);
+    							ObjectMapper mapper = new ObjectMapper();
+    							try {
+    								String json = mapper.writeValueAsString(map);
+    								if (null != json && null != socket) {
+    									socket.sendMessage(json);
+    								}
+    							} catch (JsonProcessingException e) {
+    								e.printStackTrace();
+    							}
     							continue;
     						}
     					}

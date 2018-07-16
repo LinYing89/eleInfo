@@ -143,12 +143,12 @@ button中的id为设备编码_btn, 如d1_btn
 										<li class="list-group-item">B相电压:&nbsp;<span id="bxV">0</span><span>V</span></li>
 										<li class="list-group-item">C相电压:&nbsp;<span id="cxV">0</span><span>V</span></li>
 										<li class="list-group-item">功率因数:&nbsp;<span id="yinshu">0</span></li>
-										<li class="list-group-item">A相有功功率:&nbsp;<span id="axyg">0</span><span>KW</span></li>
-										<li class="list-group-item">A相无功功率:&nbsp;<span id="axwg">0</span><span>KVAR</span></li>
-										<li class="list-group-item">B相有功功率:&nbsp;<span id="bxyg">0</span><span>KW</span></li>
-										<li class="list-group-item">B相无功功率:&nbsp;<span id="bxwg">0</span><span>KVAR</span></li>
-										<li class="list-group-item">C相有功功率:&nbsp;<span id="cxyg">0</span><span>KW</span></li>
-										<li class="list-group-item">C相无功功率:&nbsp;<span id="cxwg">0</span><span>KVAR</span></li>
+										<li class="list-group-item">A相有功功率:&nbsp;<span id="axyg">0</span><span>kW</span></li>
+										<li class="list-group-item">A相无功功率:&nbsp;<span id="axwg">0</span><span>kVar</span></li>
+										<li class="list-group-item">B相有功功率:&nbsp;<span id="bxyg">0</span><span>kW</span></li>
+										<li class="list-group-item">B相无功功率:&nbsp;<span id="bxwg">0</span><span>kVar</span></li>
+										<li class="list-group-item">C相有功功率:&nbsp;<span id="cxyg">0</span><span>kW</span></li>
+										<li class="list-group-item">C相无功功率:&nbsp;<span id="cxwg">0</span><span>kVar</span></li>
 									</ul>
 								</div>
 							</div>
