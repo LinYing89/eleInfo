@@ -57,8 +57,8 @@ public class MyClientHandler extends ChannelInboundHandlerAdapter {
         if (evt instanceof IdleStateEvent) {  // 2
         	logger.info(evt);
             ctx.close();
-            MyClient.getIns().linking = false;
         }
+        MyClient.getIns().linking = false;
     }
 
     public void send(byte[] by){
